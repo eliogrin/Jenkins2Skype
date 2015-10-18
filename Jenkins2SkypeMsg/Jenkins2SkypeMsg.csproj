@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B299CA76-EE69-4382-823B-7CA85588D71A}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Jenkins2SkypeMsg</RootNamespace>
+    <AssemblyName>Jenkins2SkypeMsg</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="core\TaskExecutors.cs" />
+    <Compile Include="core\TaskLauncher.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="utils\CI\jenkins\connectors\BuildConnector.cs" />
+    <Compile Include="utils\CI\jenkins\connectors\JobConnector.cs" />
+    <Compile Include="utils\CI\jenkins\connectors\LogConnector.cs" />
+    <Compile Include="utils\CI\jenkins\connectors\ViewConnector.cs" />
+    <Compile Include="utils\CI\jenkins\handlers\BuildFrozenMonitor.cs" />
+    <Compile Include="utils\CI\jenkins\handlers\BuildStatusMonitor.cs" />
+    <Compile Include="utils\CI\jenkins\handlers\BuildStillRedMonitor.cs" />
+    <Compile Include="utils\CI\jenkins\handlers\DailyReport.cs" />
+    <Compile Include="utils\CI\jenkins\handlers\GroupStatusMonitoring.cs" />
+    <Compile Include="utils\configuration\notifications\BuildStatusConfig.cs" />
+    <Compile Include="utils\configuration\Config.cs" />
+    <Compile Include="utils\configuration\JobConfiguration.cs" />
+    <Compile Include="utils\configuration\JobsConfigReader.cs" />
+    <Compile Include="utils\configuration\notifications\BuildStillRedConfig.cs" />
+    <Compile Include="utils\configuration\notifications\DailyMessagesConfig.cs" />
+    <Compile Include="utils\configuration\notifications\DailyReportConfig.cs" />
+    <Compile Include="utils\fileReader\XmlFile.cs" />
+    <Compile Include="utils\TextUtils.cs" />
+    <Compile Include="utils\TimeUtils.cs" />
+    <Compile Include="utils\TraceInit.cs" />
+    <Compile Include="utils\messenger\Messenger.cs" />
+    <Compile Include="utils\messenger\SkypeConnector.cs" />
+    <Compile Include="utils\WebUtils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="jobs.config">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <COMReference Include="SKYPE4COMLib">
+      <Guid>{03282B5D-B38F-469D-849A-09B0A7F4881B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
