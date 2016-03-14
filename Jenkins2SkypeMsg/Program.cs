@@ -25,16 +25,17 @@ namespace Jenkins2SkypeMsg
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Yo can specify config name as argument to launch this app.");
                 Console.WriteLine("\nSelect options to start app:");
-                Console.WriteLine("[1] - to specify config name and start monitoring;");
+                Console.WriteLine("[1] - start monitoring;");
                 Console.WriteLine("[2] - to create new skype group chat and get group blob;");
+                Console.WriteLine("[3] - to create new config file;");
                 Console.WriteLine("[0] - to exit");
 
                 bool readOptions = false;
                 do
                 {
-                    Console.Write("[");
+                    Console.Write("=>");
                     ConsoleKeyInfo key = Console.ReadKey();
-                    Console.WriteLine("]");
+                    Console.WriteLine("");
 
                     if (key.Key == ConsoleKey.D1)
                     {
@@ -47,6 +48,12 @@ namespace Jenkins2SkypeMsg
                         }
                     }
                     else if (key.Key == ConsoleKey.D2)
+                    {
+                        Console.WriteLine("Sorry, not Implemented yet");
+                        Thread.Sleep(2000);
+                        readOptions = true;
+                    }
+                    else if (key.Key == ConsoleKey.D3)
                     {
                         Console.WriteLine("Sorry, not Implemented yet");
                         Thread.Sleep(2000);

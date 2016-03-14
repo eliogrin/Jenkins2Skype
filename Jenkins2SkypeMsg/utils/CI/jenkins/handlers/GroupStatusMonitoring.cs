@@ -28,7 +28,7 @@ namespace Jenkins2SkypeMsg.utils.CI.jenkins.handlers
 
         public void prepareData(List<BuildStatusConfig> configs)
         {
-            List<String> listOfStatuses = new List<string>();
+            List<string> listOfStatuses = new List<string>();
             for (int row = 0; row < groupStatuses.GetLength(0); row++)
             {
                 String currentStatus = groupStatuses[row, ViewConnector.jobStatus].Split('_')[0];
@@ -40,7 +40,7 @@ namespace Jenkins2SkypeMsg.utils.CI.jenkins.handlers
                     {
                         failedBuilds += ", ";
                     }
-                    failedBuilds += groupStatuses[row, ViewConnector.jobName].Split('_')[1].ToUpper();
+                    failedBuilds += groupStatuses[row, ViewConnector.jobName];
                 }
             }
             status = getEpicStatus(listOfStatuses);
