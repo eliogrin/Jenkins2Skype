@@ -51,6 +51,7 @@ namespace Jenkins2SkypeMsg.utils.CI.jenkins.handlers
             {
                 message = String.Format(config.messageText, build.getStatus().ToUpper(), build.getNumber());
                 message += getParticipant();
+                message += getTextFromLog();
                 message += getLink();
             }
             return message;
@@ -92,27 +93,30 @@ namespace Jenkins2SkypeMsg.utils.CI.jenkins.handlers
 
         private String getTextFromLog()
         {
-            String text = "";
+            String textFromLog = "";
 
-            if (config.textFromLog)
+            if (!String.IsNullOrEmpty(config.textFromLogKey) && !String.IsNullOrEmpty(config.textFromLogMsg))
             {
                 LogConnector log = new LogConnector(build.getUrl());
-                text = log.getLineByKey(config.textFromLogKey);
-                if (!String.IsNullOrEmpty(text))
+                textFromLog = log.getLineByKey(config.textFromLogKey);
+                if (!String.IsNullOrEmpty(textFromLog))
                 {
-                    text = "\n   " + config.textFromLogMsg + ": ";
+                    textFromLog = "\n   " + config.textFromLogMsg + ": " + textFromLog;
                 }
             }
 
-            return text;
+            return textFromLog;
         }
 
         private String getLink()
         {
-            String link = "\n   uri: ";
-            link += build.getUrl();
+            String link = "";
+            link = build.getUrl();
+            if (!String.IsNullOrEmpty(link))
+            {
+                link = "\n   uri: " + link;
+            }
             return link;
         }
-
     }
 }

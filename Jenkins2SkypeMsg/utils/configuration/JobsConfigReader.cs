@@ -114,8 +114,6 @@ namespace Jenkins2SkypeMsg.utils.configuration
 
                         buildStatus.participantMsg = getValue(jobStatusNode, "participantMsg");
 
-                        buildStatus.textFromLog = Convert.ToBoolean(tryGetValue(jobStatusNode, "textFromLogKey", defaultTopicChange)) &&
-                            Convert.ToBoolean(tryGetValue(jobStatusNode, "textFromLogMsg", defaultTopicChange));
                         buildStatus.textFromLogKey = tryGetValue(jobStatusNode, "textFromLogKey", defaultTopicText);
                         buildStatus.textFromLogMsg = tryGetValue(jobStatusNode, "textFromLogMsg", defaultTopicText);
 
