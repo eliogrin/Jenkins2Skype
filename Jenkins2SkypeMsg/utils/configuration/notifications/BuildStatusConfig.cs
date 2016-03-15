@@ -12,6 +12,9 @@ namespace Jenkins2SkypeMsg.utils.configuration.notifications
         public Boolean messageSend { get; set; }
         public String messageText { get; set; }
         public String participantMsg { get; set; }
-        public String logMsg { get; set; }
+
+        public Boolean textFromLog { get; set; }
+        public String textFromLogKey { get; set; }
+        public String textFromLogMsg { get; set; }
     }
 }

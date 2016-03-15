@@ -9,12 +9,10 @@ namespace Jenkins2SkypeMsg.utils.CI.jenkins.handlers
     class BuildStillRedMonitor
     {
         private BuildConnector build;
-        private LogConnector log;
 
-        public BuildStillRedMonitor(BuildConnector build, LogConnector log)
+        public BuildStillRedMonitor(BuildConnector build)
         {
             this.build = build;
-            this.log = log;
         }
 
         public String getMessage(JobConfiguration config)
@@ -39,46 +37,6 @@ namespace Jenkins2SkypeMsg.utils.CI.jenkins.handlers
                     if (!String.IsNullOrEmpty(participant))
                     {
                         message += String.Format(srConfig.participantMsg, TextUtils.optimizeUserName(participant));
-                    }
-                }
-
-                if (!String.IsNullOrEmpty(log.getFailure()))
-                {
-                    if (!String.IsNullOrEmpty(srConfig.subJobChangedMsg))
-                    {
-                        String formatedSubJobs = getFormatedSubJobs(log.getFailure(), config.lastFailedSubJobs);
-                        if (!String.IsNullOrEmpty(formatedSubJobs))
-                            message += String.Format(srConfig.subJobChangedMsg, formatedSubJobs);
-                    }
-
-                    if (!String.IsNullOrEmpty(srConfig.subJobClaimed)
-                        || !String.IsNullOrEmpty(srConfig.subJobNotClaimed))
-                    {
-                        foreach (String subJob in log.getFailure().Split(','))
-                        {
-                            if (!String.IsNullOrEmpty(subJob))
-                            {
-                                String subJobUrl = WebUtils.getUrlFromJob(config.url, subJob);
-                                BuildConnector subJobBuild = new BuildConnector(subJobUrl);
-                                String claimedPerson = subJobBuild.getClaimedPerson();
-                                String subJobName = subJob.Split('#')[0].Trim();
-                                if (String.IsNullOrEmpty(claimedPerson))
-                                {
-                                    if (!String.IsNullOrEmpty(config.bldStillRedConfig.subJobNotClaimed))
-                                    {
-                                        message += String.Format(config.bldStillRedConfig.subJobNotClaimed, subJobName);
-                                    }
-                                }
-                                else
-                                {
-                                    if (!String.IsNullOrEmpty(config.bldStillRedConfig.subJobClaimed))
-                                    {
-                                        message += String.Format(config.bldStillRedConfig.subJobClaimed,
-                                            subJobName, claimedPerson);
-                                    }
-                                }
-                            }
-                        }
                     }
                 }
             }

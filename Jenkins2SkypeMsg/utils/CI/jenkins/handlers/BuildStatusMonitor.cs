@@ -2,7 +2,6 @@
 using Jenkins2SkypeMsg.utils.configuration.notifications;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Jenkins2SkypeMsg.utils.CI.jenkins.handlers
 {
@@ -10,8 +9,6 @@ namespace Jenkins2SkypeMsg.utils.CI.jenkins.handlers
     {
         private BuildConnector build;
         private BuildStatusConfig config;
-        private LogConnector log;
-        private String failedJob;
         
         private Boolean validation = false;
 
@@ -19,12 +16,7 @@ namespace Jenkins2SkypeMsg.utils.CI.jenkins.handlers
         {
             this.build = build;
         }
-
-        public void attachLog(LogConnector log)
-        {
-            this.log = log;
-        }
-
+        
         public void prepareData(List<BuildStatusConfig> configs)
         {
             foreach (BuildStatusConfig statusConfig in configs)
@@ -59,7 +51,6 @@ namespace Jenkins2SkypeMsg.utils.CI.jenkins.handlers
             {
                 message = String.Format(config.messageText, build.getStatus().ToUpper(), build.getNumber());
                 message += getParticipant();
-                message += getFailedJob();
                 message += getLink();
             }
             return message;
@@ -99,32 +90,27 @@ namespace Jenkins2SkypeMsg.utils.CI.jenkins.handlers
             return participant;
         }
 
-        private String getFailedJob()
+        private String getTextFromLog()
         {
-            String job = "";
-            if (!String.IsNullOrEmpty(config.logMsg))
+            String text = "";
+
+            if (config.textFromLog)
             {
-                job = "\n   ";
-                failedJob = log.getFailure();
-                if (!String.IsNullOrEmpty(failedJob))
-                    job += String.Format(config.logMsg, failedJob);
+                LogConnector log = new LogConnector(build.getUrl());
+                text = log.getLineByKey(config.textFromLogKey);
+                if (!String.IsNullOrEmpty(text))
+                {
+                    text = "\n   " + config.textFromLogMsg + ": ";
+                }
             }
-            return job;
+
+            return text;
         }
 
         private String getLink()
         {
             String link = "\n   uri: ";
-
-            if (String.IsNullOrEmpty(failedJob) || failedJob.Contains(", "))
-            {
-                link += build.getUrl();
-            }
-            else
-            {
-                link += WebUtils.getUrlFromJob(build.getUrl(), failedJob);
-            }
-
+            link += build.getUrl();
             return link;
         }
 

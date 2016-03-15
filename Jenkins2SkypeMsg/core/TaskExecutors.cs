@@ -76,11 +76,10 @@ namespace Jenkins2SkypeMsg.core
                         }
                         if (finishedBuild.isValid())
                         {
-                            LogConnector log = new LogConnector(finishedBuild.getUrl());
-                            if (config.bldStatusChanged) buildStatusCnahged(finishedBuild, log);
-                            if (config.bldStillRed) buildStillRed(finishedBuild, log);
+                            if (config.bldStatusChanged) buildStatusCnahged(finishedBuild);
+                            if (config.bldStillRed) buildStillRed(finishedBuild);
 
-                            updateConfig(finishedBuild, log);
+                            updateConfig(finishedBuild);
                         }
                     }
                 }
@@ -95,12 +94,11 @@ namespace Jenkins2SkypeMsg.core
             }
         }
 
-        private void buildStatusCnahged(BuildConnector build, LogConnector log)
+        private void buildStatusCnahged(BuildConnector build)
         {
             if (!config.lastBuildStatus.Contains(build.getStatus()) && config.lastBuildNumber < build.getNumber())
             {
                 BuildStatusMonitor monitor = new BuildStatusMonitor(build);
-                monitor.attachLog(log);
                 monitor.prepareData(config.bldStatusChangedConfigs);
                 if (monitor.isValid())
                 {
@@ -122,13 +120,13 @@ namespace Jenkins2SkypeMsg.core
             }
         }
 
-        private void buildStillRed(BuildConnector build, LogConnector log)
+        private void buildStillRed(BuildConnector build)
         {
             if (build.getNumber() != config.lastBuildNumber)
             {
                 if (config.lastBuildNumber != 0)
                 {
-                    BuildStillRedMonitor buildStillRedMonitor = new BuildStillRedMonitor(build, log);
+                    BuildStillRedMonitor buildStillRedMonitor = new BuildStillRedMonitor(build);
                     String message = buildStillRedMonitor.getMessage(config);
 
                     if (!String.IsNullOrEmpty(message))
@@ -184,7 +182,7 @@ namespace Jenkins2SkypeMsg.core
             }
         }
 
-        private void updateConfig(BuildConnector build, LogConnector log)
+        private void updateConfig(BuildConnector build)
         {
             if(build.getNumber() != config.lastBuildNumber)
             {
@@ -192,7 +190,6 @@ namespace Jenkins2SkypeMsg.core
                     Config.Instance.Find(x => x.name == config.name).lastBuildStatus = getStatusPattern(build.getStatus());
                 Config.Instance.Find(x => x.name == config.name).lastBuildNumber = build.getNumber();
                 Config.Instance.Find(x => x.name == config.name).lastFinishTime = build.getTimestamp() + build.getDuraction();
-                Config.Instance.Find(x => x.name == config.name).lastFailedSubJobs = log.getFailure();
             }
         }
 

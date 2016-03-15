@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="configuration">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="jobs">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="job">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="ciUri">
+                      <xs:complexType>
+                        <xs:attribute name="name" type="xs:string" use="required" />
+                        <xs:attribute name="url" type="xs:string" use="required" />
+                        <xs:attribute name="timeout" type="xs:unsignedShort" use="optional" />
+                        <xs:attribute name="onTime" type="xs:string" use="optional" />
+                        <xs:attribute name="onDate" type="xs:string" use="optional" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="messenger">
+                      <xs:complexType>
+                        <xs:attribute name="type" type="xs:string" use="required" />
+                        <xs:attribute name="chatId" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="notifications">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element minOccurs="0" name="dailyReport">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="achieve">
+                                  <xs:complexType>
+                                    <xs:attribute name="type" type="xs:string" use="required" />
+                                    <xs:attribute name="message" type="xs:string" use="required" />
+                                    <xs:attribute name="condition" type="xs:string" use="optional" />
+                                    <xs:attribute name="minToGet" type="xs:unsignedByte" use="optional" />
+                                    <xs:attribute name="maxToGet" type="xs:unsignedByte" use="optional" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="enabled" type="xs:boolean" use="required" />
+                              <xs:attribute name="timeFrom" type="xs:string" use="required" />
+                              <xs:attribute name="timeTo" type="xs:string" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element minOccurs="0" name="buildStatusChanged">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="status">
+                                  <xs:complexType>
+                                    <xs:attribute name="type" type="xs:string" use="required" />
+                                    <xs:attribute name="topic" type="xs:string" use="optional" />
+                                    <xs:attribute name="message" type="xs:string" use="optional" />
+                                    <xs:attribute name="participantMsg" type="xs:string" use="optional" />
+                                    <xs:attribute name="topicChange" type="xs:boolean" use="optional" />
+                                    <xs:attribute name="textFromLogKey" type="xs:string" use="optional" />
+                                    <xs:attribute name="textFromLogMsg" type="xs:string" use="optional" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="enabled" type="xs:boolean" use="required" />
+                              <xs:attribute name="messageSend" type="xs:boolean" use="optional" />
+                              <xs:attribute name="defaultMessage" type="xs:string" use="optional" />
+                              <xs:attribute name="topicChange" type="xs:boolean" use="optional" />
+                              <xs:attribute name="defaultTopic" type="xs:string" use="optional" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element minOccurs="0" name="buildStillRed">
+                            <xs:complexType>
+                              <xs:attribute name="enabled" type="xs:boolean" use="required" />
+                              <xs:attribute name="type" type="xs:string" use="required" />
+                              <xs:attribute name="message" type="xs:string" use="required" />
+                              <xs:attribute name="participantMsg" type="xs:string" use="optional" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element minOccurs="0" name="buildFrozen">
+                            <xs:complexType>
+                              <xs:attribute name="enabled" type="xs:boolean" use="required" />
+                              <xs:attribute name="timeout" type="xs:unsignedShort" use="required" />
+                              <xs:attribute name="message" type="xs:string" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element minOccurs="0" name="groupStatusMonitoring">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="status">
+                                  <xs:complexType>
+                                    <xs:attribute name="type" type="xs:string" use="required" />
+                                    <xs:attribute name="topic" type="xs:string" use="optional" />
+                                    <xs:attribute name="message" type="xs:string" use="optional" />
+                                    <xs:attribute name="participantMsg" type="xs:string" use="optional" />
+                                    <xs:attribute name="topicChange" type="xs:boolean" use="optional" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="enabled" type="xs:boolean" use="required" />
+                              <xs:attribute name="topicChange" type="xs:boolean" use="optional" />
+                              <xs:attribute name="message" type="xs:string" use="optional" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

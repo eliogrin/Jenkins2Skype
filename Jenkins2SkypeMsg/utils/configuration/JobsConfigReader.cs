@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace Jenkins2SkypeMsg.utils.configuration
 {
@@ -25,11 +27,35 @@ namespace Jenkins2SkypeMsg.utils.configuration
         static public Boolean checkConfigFile(String path)
         {
             bool result = false;
+            bool validationLoaded = false;
             XmlDocument configXml = new XmlDocument();
             try
             {
+                configXml.Schemas.Add(null, @"files\config.xsd");
+                validationLoaded = true;
+            }
+            catch (FileNotFoundException ex)
+            {
+                Trace.WriteLine("-- sorry, can't find validation file, so validation was skipped, with message: " + ex.Message);
+            }
+            try
+            {
+                bool validationResult = true;
                 configXml.Load(path);
-                result = true;
+                if (validationLoaded)
+                {
+                    configXml.Validate((sender, vargs) =>
+                    {
+                        if (validationResult)
+                        {
+                            Trace.WriteLine("Sorry, but your config file is not valid:");
+                            validationResult = false;
+                        }
+                        IXmlLineInfo info = sender as IXmlLineInfo;
+                        Trace.WriteLine(String.Format("{0}: {1}; Line: {2}", vargs.Severity, vargs.Message, info != null ? info.LineNumber.ToString() : "not known"));
+                    });
+                }
+                result = validationResult;
             }
             catch (Exception ex)
             {
@@ -61,7 +87,7 @@ namespace Jenkins2SkypeMsg.utils.configuration
 
                 XmlNode jobMonitoring = jobNode.SelectSingleNode("notifications");
                 
-                XmlNode buildStatusNode = jobMonitoring.SelectSingleNode("buildStatusCnahged");
+                XmlNode buildStatusNode = jobMonitoring.SelectSingleNode("buildStatusChanged");
                 config.bldStatusChanged = Convert.ToBoolean(getValue(buildStatusNode, "enabled"));
                 config.buildStatusTopicChange = Convert.ToBoolean(getValue(buildStatusNode, "topicChange"));
                 if (config.bldStatusChanged)
@@ -87,7 +113,11 @@ namespace Jenkins2SkypeMsg.utils.configuration
                         buildStatus.topicText = tryGetValue(jobStatusNode, "topic", defaultTopicText);
 
                         buildStatus.participantMsg = getValue(jobStatusNode, "participantMsg");
-                        buildStatus.logMsg = getValue(jobStatusNode, "logMsg");
+
+                        buildStatus.textFromLog = Convert.ToBoolean(tryGetValue(jobStatusNode, "textFromLogKey", defaultTopicChange)) &&
+                            Convert.ToBoolean(tryGetValue(jobStatusNode, "textFromLogMsg", defaultTopicChange));
+                        buildStatus.textFromLogKey = tryGetValue(jobStatusNode, "textFromLogKey", defaultTopicText);
+                        buildStatus.textFromLogMsg = tryGetValue(jobStatusNode, "textFromLogMsg", defaultTopicText);
 
                         buildStatuses.Add(buildStatus);
                     }                    
@@ -101,10 +131,7 @@ namespace Jenkins2SkypeMsg.utils.configuration
                     BuildStillRedConfig buildStillRedConfig = new BuildStillRedConfig();
                     buildStillRedConfig.statuses = getValue(buildStillRedNode, "type");
                     buildStillRedConfig.message = getValue(buildStillRedNode, "message");
-                    buildStillRedConfig.subJobChangedMsg = getValue(buildStillRedNode, "subJobChangedMsg");
                     buildStillRedConfig.participantMsg = getValue(buildStillRedNode, "participantMsg");
-                    buildStillRedConfig.subJobClaimed = getValue(buildStillRedNode, "subJobClaimed");
-                    buildStillRedConfig.subJobNotClaimed = getValue(buildStillRedNode, "subJobNotClaimed");
                     config.bldStillRedConfig = buildStillRedConfig;
                 }
 
