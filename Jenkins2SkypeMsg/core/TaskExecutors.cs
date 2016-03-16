@@ -54,7 +54,7 @@ namespace Jenkins2SkypeMsg.core
 
             if (status.Contains("Online") && config.activeMessaging && isWorkToday())
             {
-                if (config.bldStatusChanged || config.bldFroze)
+                if (config.bldStatusChanged || config.bldFroze || config.eachBuildStatus)
                 {
                     BuildConnector lastBuild = new BuildConnector(config.url, true);
                     if (lastBuild.isValid())
@@ -77,12 +77,14 @@ namespace Jenkins2SkypeMsg.core
                         if (finishedBuild.isValid())
                         {
                             if (config.bldStatusChanged) buildStatusCnahged(finishedBuild);
+                            if (config.eachBuildStatus) eachBuildStatus(finishedBuild);
                             if (config.bldStillRed) buildStillRed(finishedBuild);
 
                             updateConfig(finishedBuild);
                         }
                     }
                 }
+                
                 if (config.dailyReport) dailyReport();
                 if (config.grpStatusMonitoring) groupStatusMonitoring();
             }
@@ -113,6 +115,21 @@ namespace Jenkins2SkypeMsg.core
                         }
                     }
 
+                    String messageText = monitor.getMessage();
+                    if (!String.IsNullOrEmpty(messageText))
+                        Messenger.Instance.sendMessage(config.messengerChatId, messageText);
+                }
+            }
+        }
+
+        private void eachBuildStatus(BuildConnector build)
+        {
+            if (config.lastBuildNumber < build.getNumber())
+            {
+                BuildStatusMonitor monitor = new BuildStatusMonitor(build);
+                monitor.prepareData(config.eachBuildStatusConfigs);
+                if (monitor.isValid())
+                {
                     String messageText = monitor.getMessage();
                     if (!String.IsNullOrEmpty(messageText))
                         Messenger.Instance.sendMessage(config.messengerChatId, messageText);

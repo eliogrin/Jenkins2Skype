@@ -55,6 +55,8 @@
                                     <xs:attribute name="message" type="xs:string" use="optional" />
                                     <xs:attribute name="participantMsg" type="xs:string" use="optional" />
                                     <xs:attribute name="topicChange" type="xs:boolean" use="optional" />
+                                    <xs:attribute name="parameterName" type="xs:string" use="optional" />
+                                    <xs:attribute name="parameterMsg" type="xs:string" use="optional" />
                                     <xs:attribute name="textFromLogKey" type="xs:string" use="optional" />
                                     <xs:attribute name="textFromLogMsg" type="xs:string" use="optional" />
                                   </xs:complexType>
@@ -65,6 +67,34 @@
                               <xs:attribute name="defaultMessage" type="xs:string" use="optional" />
                               <xs:attribute name="topicChange" type="xs:boolean" use="optional" />
                               <xs:attribute name="defaultTopic" type="xs:string" use="optional" />
+                              <xs:attribute name="defaultParameterName" type="xs:string" use="optional" />
+                              <xs:attribute name="defaultParameterMsg" type="xs:string" use="optional" />
+                              <xs:attribute name="defaultTextFromLogKey" type="xs:string" use="optional" />
+                              <xs:attribute name="defaultTextFromLogMsg" type="xs:string" use="optional" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element minOccurs="0" name="statusOfEachBuild">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="status">
+                                  <xs:complexType>
+                                    <xs:attribute name="type" type="xs:string" use="required" />
+                                    <xs:attribute name="message" type="xs:string" use="optional" />
+                                    <xs:attribute name="participantMsg" type="xs:string" use="optional" />
+                                    <xs:attribute name="parameterName" type="xs:string" use="optional" />
+                                    <xs:attribute name="parameterMsg" type="xs:string" use="optional" />
+                                    <xs:attribute name="textFromLogKey" type="xs:string" use="optional" />
+                                    <xs:attribute name="textFromLogMsg" type="xs:string" use="optional" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="enabled" type="xs:boolean" use="required" />
+                              <xs:attribute name="messageSend" type="xs:boolean" use="optional" />
+                              <xs:attribute name="defaultMessage" type="xs:string" use="optional" />
+                              <xs:attribute name="defaultParameterName" type="xs:string" use="optional" />
+                              <xs:attribute name="defaultParameterMsg" type="xs:string" use="optional" />
+                              <xs:attribute name="defaultTextFromLogKey" type="xs:string" use="optional" />
+                              <xs:attribute name="defaultTextFromLogMsg" type="xs:string" use="optional" />
                             </xs:complexType>
                           </xs:element>
                           <xs:element minOccurs="0" name="buildStillRed">

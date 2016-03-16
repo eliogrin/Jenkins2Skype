@@ -15,5 +15,8 @@ namespace Jenkins2SkypeMsg.utils.configuration.notifications
 
         public String textFromLogKey { get; set; }
         public String textFromLogMsg { get; set; }
+
+        public String parameterName { get; set; }
+        public String parameterMsg { get; set; }
     }
 }

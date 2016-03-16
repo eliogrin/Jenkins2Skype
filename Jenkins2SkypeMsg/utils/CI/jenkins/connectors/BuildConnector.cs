@@ -149,9 +149,21 @@ namespace Jenkins2SkypeMsg.utils.CI.jenkins.connectors
             return url;
         }
 
-        public String getClaimedPerson()
+        public String getParameter(String name)
         {
-            return getInnerText("//claimedBy");
+            String parameter = "";
+            if (!String.IsNullOrEmpty(name))
+            {
+                String[,] allParameters = getNodesText("//action/parameter", "name", "value");
+                for (int a = 0; a < allParameters.GetLength(0); a++)
+                {
+                    if (allParameters[a, 0].Equals(name))
+                    {
+                        parameter = allParameters[a, 1];
+                    }
+                }
+            }
+            return parameter;
         }
     }
 }

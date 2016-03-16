@@ -19,6 +19,9 @@ namespace Jenkins2SkypeMsg.utils.configuration
         public Boolean buildStatusTopicChange { get; set; }
         public List<BuildStatusConfig> bldStatusChangedConfigs { get; set; }
 
+        public Boolean eachBuildStatus { get; set; }
+        public List<BuildStatusConfig> eachBuildStatusConfigs { get; set; }
+
         public Boolean dailyReport { get; set; }
         public DailyReportConfig dailyReportConfig { get; set; }
 

@@ -99,8 +99,12 @@ namespace Jenkins2SkypeMsg.utils.configuration
                     String defaultMessageText = getValue(buildStatusNode, "defaultMessage");
                     String defaultTopicChange = getValue(buildStatusNode, "topicChange");
                     String defaultTopicText = getValue(buildStatusNode, "defaultTopic");
-                    
-                    foreach(XmlNode jobStatusNode in jobStatusNodes)
+                    String defaultParameterName = getValue(buildStatusNode, "defaultParameterName");
+                    String defaultParameterMsg = getValue(buildStatusNode, "defaultParameterMsg");
+                    String defaultTextFromLogKey = getValue(buildStatusNode, "defaultTextFromLogKey");
+                    String defaultTextFromLogMsg = getValue(buildStatusNode, "defaultTextFromLogMsg");
+
+                    foreach (XmlNode jobStatusNode in jobStatusNodes)
                     {
                         BuildStatusConfig buildStatus = new BuildStatusConfig();
 
@@ -114,12 +118,51 @@ namespace Jenkins2SkypeMsg.utils.configuration
 
                         buildStatus.participantMsg = getValue(jobStatusNode, "participantMsg");
 
-                        buildStatus.textFromLogKey = tryGetValue(jobStatusNode, "textFromLogKey", defaultTopicText);
-                        buildStatus.textFromLogMsg = tryGetValue(jobStatusNode, "textFromLogMsg", defaultTopicText);
+                        buildStatus.parameterName = tryGetValue(jobStatusNode, "parameterName", defaultParameterName);
+                        buildStatus.parameterMsg = tryGetValue(jobStatusNode, "parameterMsg", defaultParameterMsg);
+
+                        buildStatus.textFromLogKey = tryGetValue(jobStatusNode, "textFromLogKey", defaultTextFromLogKey);
+                        buildStatus.textFromLogMsg = tryGetValue(jobStatusNode, "textFromLogMsg", defaultTextFromLogMsg);
 
                         buildStatuses.Add(buildStatus);
                     }                    
                     config.bldStatusChangedConfigs = buildStatuses;
+                }
+
+                XmlNode eachBuildStatusNode = jobMonitoring.SelectSingleNode("statusOfEachBuild");
+                config.eachBuildStatus = Convert.ToBoolean(getValue(eachBuildStatusNode, "enabled"));
+                if (config.eachBuildStatus)
+                {
+                    XmlNodeList singleBuildStatusNodes = eachBuildStatusNode.SelectNodes("status");
+                    List<BuildStatusConfig> eachBuildStatuses = new List<BuildStatusConfig>(singleBuildStatusNodes.Count);
+
+                    String defaultMessageSend = getValue(eachBuildStatusNode, "messageSend");
+                    String defaultMessageText = getValue(eachBuildStatusNode, "defaultMessage");
+                    String defaultParameterName = getValue(eachBuildStatusNode, "defaultParameterName");
+                    String defaultParameterMsg = getValue(eachBuildStatusNode, "defaultParameterMsg");
+                    String defaultTextFromLogKey = getValue(eachBuildStatusNode, "defaultTextFromLogKey");
+                    String defaultTextFromLogMsg = getValue(eachBuildStatusNode, "defaultTextFromLogMsg");
+
+                    foreach (XmlNode singleBuildStatusNode in singleBuildStatusNodes)
+                    {
+                        BuildStatusConfig buildStatus = new BuildStatusConfig();
+
+                        buildStatus.type = getValue(singleBuildStatusNode, "type");
+
+                        buildStatus.messageSend = Convert.ToBoolean(tryGetValue(singleBuildStatusNode, "messageSend", defaultMessageSend));
+                        buildStatus.messageText = tryGetValue(singleBuildStatusNode, "message", defaultMessageText);
+
+                        buildStatus.participantMsg = getValue(singleBuildStatusNode, "participantMsg");
+
+                        buildStatus.parameterName = tryGetValue(singleBuildStatusNode, "parameterName", defaultParameterName);
+                        buildStatus.parameterMsg = tryGetValue(singleBuildStatusNode, "parameterMsg", defaultParameterMsg);
+
+                        buildStatus.textFromLogKey = tryGetValue(singleBuildStatusNode, "textFromLogKey", defaultTextFromLogKey);
+                        buildStatus.textFromLogMsg = tryGetValue(singleBuildStatusNode, "textFromLogMsg", defaultTextFromLogMsg);
+
+                        eachBuildStatuses.Add(buildStatus);
+                    }
+                    config.eachBuildStatusConfigs = eachBuildStatuses;
                 }
 
                 XmlNode buildStillRedNode = jobMonitoring.SelectSingleNode("buildStillRed");

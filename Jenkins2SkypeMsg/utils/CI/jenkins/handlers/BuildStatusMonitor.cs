@@ -51,6 +51,7 @@ namespace Jenkins2SkypeMsg.utils.CI.jenkins.handlers
             {
                 message = String.Format(config.messageText, build.getStatus().ToUpper(), build.getNumber());
                 message += getParticipant();
+                message += getParameter();
                 message += getTextFromLog();
                 message += getLink();
             }
@@ -89,6 +90,22 @@ namespace Jenkins2SkypeMsg.utils.CI.jenkins.handlers
             }
 
             return participant;
+        }
+
+        private String getParameter()
+        {
+            String parameter = "";
+
+            if (!String.IsNullOrEmpty(config.parameterName) && !String.IsNullOrEmpty(config.parameterMsg))
+            {
+                parameter = build.getParameter(config.parameterName);
+                if (!String.IsNullOrEmpty(parameter))
+                {
+                    parameter = "\n   " + config.parameterMsg + ": " + parameter;
+                }
+            }
+
+            return parameter;
         }
 
         private String getTextFromLog()
