@@ -26,13 +26,23 @@ namespace Jenkins2SkypeMsg.utils.CI.jenkins.connectors
                     if (line.Contains(keyWord))
                     {
                         String[] lineElements = line.Split(new string[] { keyWord }, StringSplitOptions.None);
+                        String extractedText;
                         if (lineElements.Length > 0)
                         {
-                            result = lineElements[1].Trim();
+                            extractedText = lineElements[1].Trim();
                         }
                         else
                         {
-                            result = line.Replace(keyWord, "").Trim();
+                            extractedText = line.Replace(keyWord, "").Trim();
+                        }
+
+                        if(!String.IsNullOrEmpty(extractedText))
+                        {
+                            if (!String.IsNullOrEmpty(result))
+                            {
+                                result += "; \n ";
+                            }
+                            result += extractedText;
                         }
                     }
                 }
