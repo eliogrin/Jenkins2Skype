@@ -95,7 +95,7 @@ namespace Jenkins2SkypeMsg.utils.messenger
                 usersCollection.Add(user);
             }
             Chat chat = skype.CreateChatMultiple(usersCollection);
-            sendGroupMessage(chat.Blob, "first message");
+            sendGroupMessage(chat.Blob, "Group chat created, blob id of chat: '" + chat.Blob +"'");
             return chat.Blob;
         }
 

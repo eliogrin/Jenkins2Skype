@@ -23,19 +23,26 @@ namespace Jenkins2SkypeMsg
             {
                 ConsoleColor defaultColor = Console.ForegroundColor;
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Yo can specify config name as argument to launch this app.");
-                Console.WriteLine("\nSelect options to start app:");
-                Console.WriteLine("[1] - start monitoring;");
-                Console.WriteLine("[2] - to create new skype group chat and get group blob;");
-                Console.WriteLine("[3] - to create new config file;");
-                Console.WriteLine("[0] - to exit");
+                Console.WriteLine("You can specify config name as argument to launch this app and launch this app automaticaly.");
 
                 bool readOptions = false;
+                bool showMenu = true;
                 do
                 {
+                    if (showMenu)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("What do you want to do:");
+                        Console.WriteLine("[1] - start Jenkins monitoring;");
+                        Console.WriteLine("[2] - to test or create new skype group chat;");
+                        Console.WriteLine("[3] - to create new config file [not implemented];");
+                        Console.WriteLine("[0] - to exit");
+                    }
+
                     Console.Write("=>");
                     ConsoleKeyInfo key = Console.ReadKey();
                     Console.WriteLine("");
+                    showMenu = true;
 
                     if (key.Key == ConsoleKey.D1)
                     {
@@ -49,15 +56,12 @@ namespace Jenkins2SkypeMsg
                     }
                     else if (key.Key == ConsoleKey.D2)
                     {
-                        Console.WriteLine("Sorry, not Implemented yet");
-                        Thread.Sleep(2000);
-                        readOptions = true;
+                        SkypeTester.start();
                     }
                     else if (key.Key == ConsoleKey.D3)
                     {
                         Console.WriteLine("Sorry, not Implemented yet");
                         Thread.Sleep(2000);
-                        readOptions = true;
                     }
                     else if (key.Key == ConsoleKey.D0)
                     {
@@ -68,6 +72,7 @@ namespace Jenkins2SkypeMsg
                     else
                     {
                         Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        showMenu = false;
                     }
                 }
                 while (!readOptions);

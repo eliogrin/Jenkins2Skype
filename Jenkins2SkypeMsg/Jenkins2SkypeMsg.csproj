@@ -63,6 +63,7 @@
     <Compile Include="utils\configuration\notifications\DailyMessagesConfig.cs" />
     <Compile Include="utils\configuration\notifications\DailyReportConfig.cs" />
     <Compile Include="utils\fileReader\XmlFile.cs" />
+    <Compile Include="utils\messenger\SkypeTester.cs" />
     <Compile Include="utils\TextUtils.cs" />
     <Compile Include="utils\TimeUtils.cs" />
     <Compile Include="utils\TraceInit.cs" />
