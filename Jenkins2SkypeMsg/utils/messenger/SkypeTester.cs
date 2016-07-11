@@ -67,15 +67,14 @@ namespace Jenkins2SkypeMsg.utils.messenger
 
         private static String createGroupChat()
         {
-            Console.WriteLine("To create group chat required at least 2 skype users.");
-            Console.WriteLine("Enter user Skype login of first user (group admin):");
+            Console.WriteLine("To create group chat Skype required users from contact list.");
+            Console.WriteLine("Enter user Skype login of user (it will be a group admin):");
             String groupAdmin = Console.ReadLine();
-            Console.WriteLine("Eneter Skype login of second user");
-            String secondUser = Console.ReadLine();
 
-            String blob = skype.createGroup(groupAdmin, secondUser);
+            String blob = skype.createGroup(groupAdmin);
 
             skype.sendMessage(blob, "/setrole " + groupAdmin + " MASTER");
+            Console.WriteLine("New chat blob id is '" + blob + "'");
 
             return blob;
         }

@@ -47,11 +47,12 @@ namespace Jenkins2SkypeMsg
                     if (key.Key == ConsoleKey.D1)
                     {
                         Console.WriteLine("Enter config name or path:");
-                        configPath = Console.ReadLine();
+                        string tempConfigPath = Console.ReadLine();
                         
-                        if (JobsConfigReader.checkConfigFile(configPath))
+                        if (JobsConfigReader.checkConfigFile(tempConfigPath))
                         {
                             readOptions = true;
+                            configPath = tempConfigPath;
                         }
                     }
                     else if (key.Key == ConsoleKey.D2)
@@ -66,7 +67,7 @@ namespace Jenkins2SkypeMsg
                     else if (key.Key == ConsoleKey.D0)
                     {
                         Console.WriteLine("Ok, bye-bye");
-                        Thread.Sleep(2000);
+                        Thread.Sleep(500);
                         readOptions = true;
                     }
                     else
